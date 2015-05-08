@@ -9,6 +9,7 @@ Tested on ubuntu 15.04 x86_64
 
 files
 -----
+```
 config.qemu-x86_64	the kernel config file can be used as the basic config when use qemu-x86_64
 format.sh		format the rootfs rootfs.img
 genroot.py		all local files to the rootfs
@@ -16,6 +17,7 @@ mount.sh		mount the rootfs
 README.md		this file
 run.sh			start virtual machine with current kernel
 umount.sh		umount the rootfs
+```
 
 quick start
 -----------
