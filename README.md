@@ -3,8 +3,8 @@ kernel-test-env-maker
 
 Introduction
 ------------
-Create a temp qemu image for test the lastest linux kernel
-tested on ubuntu 15.04 x86_64
+Create a temp qemu image for test the lastest linux kernel.
+Tested on ubuntu 15.04 x86_64
 
 
 files
@@ -20,6 +20,7 @@ umount.sh		umount the rootfs
 quick start
 -----------
 put all files to root of kernel source tree
+```
 >cp config.qemu-x86_64 .config
 >make oldconfig
 >make menuconfig 
@@ -34,5 +35,6 @@ do your own config
 >./genroot.py
 >./umount.sh
 >./run.sh
+```
 
 and read the script for all the detail, make your own change.
