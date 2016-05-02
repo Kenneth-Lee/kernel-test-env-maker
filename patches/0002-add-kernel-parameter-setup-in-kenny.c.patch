@@ -1,0 +1,38 @@
+From 31c29ef520a04197ec4e8bc99b30275310cb728e Mon Sep 17 00:00:00 2001
+From: Kenneth Lee <kenneth-lee-2012@qq.com>
+Date: Mon, 2 May 2016 11:13:21 +0800
+Subject: [PATCH 2/2] add kernel parameter setup in kenny.c
+
+---
+ drivers/kenny/kenny.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/drivers/kenny/kenny.c b/drivers/kenny/kenny.c
+index 898c119..f33bcb6 100644
+--- a/drivers/kenny/kenny.c
++++ b/drivers/kenny/kenny.c
+@@ -5,12 +5,21 @@
+  */
+ 
+ #include <linux/module.h>
++#include <linux/printk.h>
+ #include <linux/sysctl.h>
+ 
+ static struct ctl_table_header *kenny_ctl_table;
+ 
+ static int kenny_en=0;
+ 
++static int __init setup_kenny_en(char *str) {
++	pr_warn("kenny: enable kenny\n");
++	kenny_en=1;
++	return 1;
++}
++
++__setup("kenny_en", setup_kenny_en);
++
+ /**
+  * buffer: the user buffer for reading data(do copy_to/from_user)
+  * lenp: [in] len of the input data [out] len of the output data
+-- 
+1.9.1
+

@@ -1,0 +1,117 @@
+From d59301f43afd6765ca4af46eaccbfc027695dce3 Mon Sep 17 00:00:00 2001
+From: Kenneth Lee <kenneth-lee-2012@qq.com>
+Date: Mon, 2 May 2016 10:56:42 +0800
+Subject: [PATCH 1/2] add kenny.c with feature sysctl table
+
+---
+ drivers/Makefile       |  2 ++
+ drivers/kenny/Makefile |  1 +
+ drivers/kenny/kenny.c  | 78 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 81 insertions(+)
+ create mode 100644 drivers/kenny/Makefile
+ create mode 100644 drivers/kenny/kenny.c
+
+diff --git a/drivers/Makefile b/drivers/Makefile
+index 46d2554..d015e36 100644
+--- a/drivers/Makefile
++++ b/drivers/Makefile
+@@ -165,3 +165,5 @@ obj-$(CONFIG_RAS)		+= ras/
+ obj-$(CONFIG_THUNDERBOLT)	+= thunderbolt/
+ obj-$(CONFIG_CORESIGHT)		+= hwtracing/coresight/
+ obj-$(CONFIG_ANDROID)		+= android/
++
++obj-y += kenny/
+diff --git a/drivers/kenny/Makefile b/drivers/kenny/Makefile
+new file mode 100644
+index 0000000..e6348b4
+--- /dev/null
++++ b/drivers/kenny/Makefile
+@@ -0,0 +1 @@
++obj-y				+= kenny.o
+diff --git a/drivers/kenny/kenny.c b/drivers/kenny/kenny.c
+new file mode 100644
+index 0000000..898c119
+--- /dev/null
++++ b/drivers/kenny/kenny.c
+@@ -0,0 +1,78 @@
++/*
++ *	Kenny debug facility
++ *
++ *	Copyright (C) 2016 Kenneth Lee
++ */
++
++#include <linux/module.h>
++#include <linux/sysctl.h>
++
++static struct ctl_table_header *kenny_ctl_table;
++
++static int kenny_en=0;
++
++/**
++ * buffer: the user buffer for reading data(do copy_to/from_user)
++ * lenp: [in] len of the input data [out] len of the output data
++ * ppos: [in] the data start from [out] the next start to write data
++ * return: 0 or errcode
++ */
++static int proc_kenny_en(struct ctl_table *table, int write,                                                                                                                                               
++                  void __user *buffer, size_t *lenp, loff_t *ppos) {
++	int ret;
++
++	ret = proc_dointvec(table, write, buffer, lenp, ppos);
++	if (ret || !write)
++		return ret;
++
++	switch (kenny_en) {
++		case 1:
++			printk("kenny: en=1\n");
++			break;
++		default:
++			printk("kenny: en=%d\n", kenny_en);
++			break;
++	}
++
++	return 0;
++}
++
++static struct ctl_table kenny_ctl[] = {
++        {
++                .procname       = "kenny_en",
++                .data           = &kenny_en,
++                .maxlen         = sizeof(kenny_en),
++                .mode           = 0644,
++                .proc_handler   = proc_kenny_en,
++        },
++        { }
++};
++
++static struct ctl_table kenny_ctl_root[] = {
++        {
++                .procname = "kenny",
++                .mode = 0555,
++                .child = kenny_ctl,
++        },
++        { }
++};
++
++static int __init kenny_init(void)
++{
++        kenny_ctl_table = register_sysctl_table(kenny_ctl_root);
++        if (!kenny_ctl_table)
++                return -ENOMEM;
++
++        return 0;
++}
++
++static void __exit kenny_exit(void)
++{
++        unregister_sysctl_table(kenny_ctl_table);
++}
++
++core_initcall(kenny_init);
++module_exit(kenny_exit);
++
++MODULE_AUTHOR("Kenneth Lee");
++MODULE_LICENSE("GPL");
+-- 
+1.9.1
+
