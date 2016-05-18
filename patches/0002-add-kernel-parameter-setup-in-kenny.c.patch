@@ -3,6 +3,8 @@ From: Kenneth Lee <kenneth-lee-2012@qq.com>
 Date: Mon, 2 May 2016 11:13:21 +0800
 Subject: [PATCH 2/2] add kernel parameter setup in kenny.c
 
+this patch add a kenrel parameter, kenny_en for init the default value of kenny_en
+
 ---
  drivers/kenny/kenny.c | 9 +++++++++
  1 file changed, 9 insertions(+)

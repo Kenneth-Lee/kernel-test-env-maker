@@ -3,6 +3,9 @@ From: Kenneth Lee <kenneth-lee-2012@qq.com>
 Date: Mon, 2 May 2016 10:56:42 +0800
 Subject: [PATCH 1/2] add kenny.c with feature sysctl table
 
+This patch add a sys control file, /proc/sys/kenny/kenny_en. So you can easily
+add control to the kernel.
+
 ---
  drivers/Makefile       |  2 ++
  drivers/kenny/Makefile |  1 +
