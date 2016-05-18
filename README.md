@@ -40,3 +40,12 @@ do your own config
 ```
 
 and read the script for all the detail, make your own change.
+
+
+Appendix
+--------
+
+### perf dependent lib (in Ubuntu 16.04) ###
+libdwarf-dev libbfd-dev libelf-dev libnuma-dev libunwind-dev zlib1g-dev
+lblzma-dev ibpfm4-dev libdw-dev libaudit-dev libssl-dev libslang2-dev
+libgtk2.0-dev libperl-dev binutils-dev libiberty-dev libpython-dev
