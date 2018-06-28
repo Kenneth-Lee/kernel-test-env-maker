@@ -1,0 +1,43 @@
+syntax on
+set showcmd
+set showmatch
+set smartcase
+set autoindent smartindent
+set incsearch
+set nowrapscan
+set viminfo='50,<1000,s100,:0,n~/.vim/viminfo
+filetype plugin on
+filetype indent on
+command Gb e! ++enc=gb2312
+"set tw=78
+set fo+=mM
+set modeline
+set sw=8
+set noet
+
+if filereadable("cscope.out")
+	cs add cscope.out
+endif
+
+if filereadable(".vimrc")
+	source .vimrc
+endif
+
+if filereadable("build.sh")
+	set makeprg=./build.sh
+elseif filereadable("armbuild.sh")
+	set makeprg=./armbuild.sh
+elseif filereadable("x86build.sh")
+	set makeprg=./x86build.sh
+endif
+
+
+command -nargs=+ Cgrep grep -Ir --include "*.[ch]" <args>
+command -nargs=+ CSgrep grep -Ir --include "*.[chsS]" <args>
+
+colorscheme elflord
+
+command -range Sv <line1>,<line2>w! /tmp/g_vim_433291
+command Lv r /tmp/g_vim_433291
+map <C-D> :!sdcv <C-R><C-W><CR>
+set colorcolumn=80
